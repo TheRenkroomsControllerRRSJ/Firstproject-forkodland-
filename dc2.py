@@ -1,5 +1,5 @@
-import requests #bu komuda erişebilmek için: pip install requests demen lazım
-import discord #bu komuda erişebilmek için: pip install discord demen lazım
+import requests #ilk başta pip install requests demen lazım.
+import discord 
 import random
 import os
 from discord.ext import commands
@@ -37,6 +37,12 @@ async def mem(ctx):
     await ctx.send(file=picture)
 
 @bot.command()
+async def sound(ctx):
+    with open('sounds/audio.wav', 'rb') as f:
+        picture = discord.File(f)
+    await ctx.send(file=picture)
+
+@bot.command()
 async def mem2(ctx):
     dosyalar = os.listdir('images')
     mem_dosyasi = random.choice(dosyalar)
@@ -44,6 +50,27 @@ async def mem2(ctx):
     with open(dosya_yolu, 'rb') as f:
         resim = discord.File(f)
     await ctx.send(file=resim)
+
+@bot.command()
+async def sound2(ctx):
+    dosyalar = os.listdir('sounds')
+    mem_dosyasi = random.choice(dosyalar)
+    dosya_yolu = os.path.join('sounds', mem_dosyasi)
+    with open(dosya_yolu, 'rb') as f:
+        ses = discord.File(f)
+    await ctx.send(file=ses)
+
+@bot.command()
+async def fikra(ctx):
+    dosyalar = os.listdir('fikralar')
+    fikra_dosyasi = random.choice(dosyalar)
+    dosya_yolu = os.path.join('fikralar', fikra_dosyasi)
+    with open(dosya_yolu, 'rb') as f:
+        dosya = discord.File(f)
+    await ctx.send(file=dosya)
+    
+
+
 def get_duck_image_url():    
     url = 'https://random-d.uk/api/random'
     res = requests.get(url)
@@ -57,4 +84,4 @@ async def duck(ctx):
     image_url = get_duck_image_url()
     await ctx.send(image_url)
 
-bot.run("TOKEN BURAYA YAZILCAK")
+bot.run("TOKEN BURAYA")
