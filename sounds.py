@@ -1,0 +1,1 @@
+sound(ses) yüklenmeli
