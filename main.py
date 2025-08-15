@@ -1,20 +1,33 @@
-import time
-meme_dict = {
-        "CRINGE": "Garip ya da utandırıcı bir şey",
-        "LOL": "Komik bir şeye verilen cevap",
-        "ROFL": "bir şakaya karşılık cevap",
-        "SHEESH": "onaylamamak",
-        "CREEPY": "korkunç",
-        "AGGRO": "agresifleşmek/sinirlenmek",
-        ":D": "gülen yüz",
-        ":)": "mutlu",
-        ":(": "üzgün",
-        ";(": "ağlıyor/ağlamak"
-            }
-print("EMOJI VE MODERN SÖZLÜĞE HOŞGELDİNİZ!")
-time.sleep(1)
-word = input("Anlamadığınız bir kelime yazın (hepsini büyük harflerle yazın!)(emojileri doğru şekilde yazınız): ")
-if word in meme_dict.keys():
-    print(meme_dict[word])
-else:
-    print("böyle bir kelime yok")
+# Import
+from flask import Flask, render_template,request, redirect
+
+
+
+app = Flask(__name__)
+
+
+
+@app.route('/', methods=['GET', 'POST'])
+def index():
+    selected_project = None
+    if request.method == 'POST':
+        if 'button_python' in request.form:
+            selected_project = 'python'
+        elif 'button_discord' in request.form:
+            selected_project = 'discord'
+        elif 'button_html' in request.form:
+            selected_project = 'html'
+        elif 'button_db' in request.form:
+            selected_project = 'db'
+    return render_template('index.html', selected_project=selected_project)
+
+@app.route('/feedback', methods=['POST'])
+def feedback():
+    email = request.form.get('email')
+    comment = request.form.get('text')
+    with open('feedback.txt', 'a', encoding='utf-8') as f:
+        f.write(f'{email}: {comment}\n')
+    return redirect('/')
+
+if __name__ == "__main__":
+    app.run(debug=True)
